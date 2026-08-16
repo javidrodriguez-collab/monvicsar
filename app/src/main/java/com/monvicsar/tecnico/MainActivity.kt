@@ -38,6 +38,8 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import com.monvicsar.tecnico.data.SampleTickets
 import com.monvicsar.tecnico.data.Ticket
+import com.monvicsar.tecnico.data.TicketSyncState
+import androidx.compose.runtime.remember
 import com.monvicsar.tecnico.ui.screens.ClosedTicketsScreen
 import com.monvicsar.tecnico.ui.screens.TicketDetailScreen
 import com.monvicsar.tecnico.ui.screens.TicketListScreen
@@ -72,6 +74,7 @@ fun MonvicsarApp() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val syncState = remember { TicketSyncState() }
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry.value?.destination?.route
 
@@ -147,6 +150,7 @@ fun MonvicsarApp() {
         NavHost(navController = navController, startDestination = Routes.LIST) {
             composable(Routes.LIST) {
                 TicketListScreen(
+                    syncState = syncState,
                     onOpenDrawer = { scope.launch { drawerState.open() } },
                     onTicketClick = { ticket -> navController.navigate(Routes.detail(ticket.id)) }
                 )
@@ -165,7 +169,16 @@ fun MonvicsarApp() {
                 val ticketId = URLDecoder.decode(rawTicketId, "UTF-8")
                 val ticket = findTicket(ticketId)
                 if (ticket != null) {
-                    TicketDetailScreen(ticket = ticket, onBack = { navController.popBackStack() })
+                    TicketDetailScreen(
+                        ticket = ticket,
+                        syncState = syncState,
+                        onBack = { navController.popBackStack() },
+                        onSaved = {
+                            navController.navigate(Routes.LIST) {
+                                popUpTo(Routes.LIST) { inclusive = true }
+                            }
+                        }
+                    )
                 }
             }
         }
