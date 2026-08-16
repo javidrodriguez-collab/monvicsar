@@ -14,12 +14,15 @@ val StatusAssignFg = Color(0xFF5B6B84)
 val StatusTravelingBg = Color(0xFFF8E9D2)
 val StatusTravelingFg = Color(0xFFC6821F)
 
-val StatusWorkingBg = Color(0xFFE3EAFC)
-val StatusWorkingFg = Color(0xFF2454C7)
+// "Working" usa el cobre del logo (tronco del arbol) en vez de un tono verde,
+// para no confundirse visualmente con el verde de marca ni con "Closed".
+val StatusWorkingBg = Color(0xFFFBE4D8)
+val StatusWorkingFg = Color(0xFFB25C3D)
 
 val StatusSuspendFg = Color(0xFF5B6B84)
 
 val StatusClosedBg = Color(0xFFDCEFE6)
 val StatusClosedFg = Color(0xFF2E8F67)
 
-val BrandBlue = Color(0xFF2454C7)
+// Verde/turqueza de marca Monvicsar, extraido del logo real (logo tecnico verde.png).
+val BrandGreen = Color(0xFF0F7A73)

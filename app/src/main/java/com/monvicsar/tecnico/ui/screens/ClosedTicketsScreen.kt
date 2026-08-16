@@ -23,7 +23,7 @@ import com.monvicsar.tecnico.data.SampleTickets
 import com.monvicsar.tecnico.data.Ticket
 import com.monvicsar.tecnico.ui.components.AppBadge
 import com.monvicsar.tecnico.ui.components.TicketCard
-import com.monvicsar.tecnico.ui.theme.BrandBlue
+import com.monvicsar.tecnico.ui.theme.BrandGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +50,7 @@ fun ClosedTicketsScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Volver", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BrandBlue)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BrandGreen)
             )
         }
     ) { padding ->

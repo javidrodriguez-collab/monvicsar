@@ -42,7 +42,7 @@ import com.monvicsar.tecnico.data.TicketStatus
 import com.monvicsar.tecnico.data.TicketSyncState
 import com.monvicsar.tecnico.ui.components.AppBadge
 import com.monvicsar.tecnico.ui.components.TicketCard
-import com.monvicsar.tecnico.ui.theme.BrandBlue
+import com.monvicsar.tecnico.ui.theme.BrandGreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -130,7 +130,7 @@ fun TicketListScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BrandBlue)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BrandGreen)
             )
         }
     ) { padding ->

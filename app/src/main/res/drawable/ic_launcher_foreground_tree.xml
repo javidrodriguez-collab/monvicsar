@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/monvicsar_tree"
+        android:insetLeft="16%"
+        android:insetTop="16%"
+        android:insetRight="16%"
+        android:insetBottom="16%" />
+</layer-list>

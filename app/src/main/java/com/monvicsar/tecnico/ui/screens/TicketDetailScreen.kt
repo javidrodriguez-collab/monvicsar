@@ -59,7 +59,7 @@ import com.monvicsar.tecnico.data.Ticket
 import com.monvicsar.tecnico.data.TicketStatus
 import com.monvicsar.tecnico.ui.components.AppBadge
 import com.monvicsar.tecnico.ui.components.StatusPill
-import com.monvicsar.tecnico.ui.theme.BrandBlue
+import com.monvicsar.tecnico.ui.theme.BrandGreen
 import com.monvicsar.tecnico.ui.theme.PriorityUrgent
 import androidx.compose.material3.TopAppBarDefaults
 import kotlinx.coroutines.launch
@@ -125,7 +125,7 @@ fun TicketDetailScreen(
                         Icon(Icons.Default.LocationOn, contentDescription = "Ver ubicación", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BrandBlue)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BrandGreen)
             )
         },
         bottomBar = {
@@ -345,7 +345,7 @@ private fun BottomBarAction(
     highlighted: Boolean = false
 ) {
     val tint = when {
-        highlighted && enabled -> BrandBlue
+        highlighted && enabled -> BrandGreen
         else -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = if (enabled) 1f else 0.5f)
     }
     Column(
