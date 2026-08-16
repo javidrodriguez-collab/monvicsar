@@ -20,4 +20,11 @@ class TicketSyncState {
         // TODO: enviar cada cambio pendiente a la API de ERPNext (PUT HD Ticket status)
         pendingChanges.clear()
     }
+
+    /**
+     * Un tecnico solo puede estar viajando o trabajando en un sitio a la vez.
+     * Devuelve true si YA hay otro ticket (distinto a excludingId) en Traveling o Working.
+     */
+    fun hasOtherActiveTicket(excludingId: String, allTickets: List<Ticket>): Boolean =
+        allTickets.any { it.id != excludingId && statusFor(it).isActiveFieldState() }
 }

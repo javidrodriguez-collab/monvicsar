@@ -172,6 +172,7 @@ fun MonvicsarApp() {
                     TicketDetailScreen(
                         ticket = ticket,
                         syncState = syncState,
+                        allTickets = SampleTickets.all,
                         onBack = { navController.popBackStack() },
                         onSaved = {
                             navController.navigate(Routes.LIST) {

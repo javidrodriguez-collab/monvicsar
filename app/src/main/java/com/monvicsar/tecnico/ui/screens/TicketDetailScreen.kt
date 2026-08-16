@@ -69,6 +69,7 @@ import kotlinx.coroutines.launch
 fun TicketDetailScreen(
     ticket: Ticket,
     syncState: com.monvicsar.tecnico.data.TicketSyncState,
+    allTickets: List<Ticket>,
     onBack: () -> Unit,
     onSaved: () -> Unit,
     modifier: Modifier = Modifier
@@ -80,6 +81,14 @@ fun TicketDetailScreen(
     val scope = rememberCoroutineScope()
 
     fun onStatusChanged(newStatus: TicketStatus) {
+        if (newStatus !in status.validNextStates()) return
+        if (newStatus.isActiveFieldState() && syncState.hasOtherActiveTicket(ticket.id, allTickets)) {
+            menuOpen = false
+            scope.launch {
+                snackbarHostState.showSnackbar("Debes cerrar tu ticket actual antes de viajar a otro")
+            }
+            return
+        }
         status = newStatus
         hasUnsavedChanges = true
         menuOpen = false
@@ -181,11 +190,16 @@ fun TicketDetailScreen(
                             fontSize = 12.sp
                         )
                     }
+                    val nextStates = status.validNextStates()
                     androidx.compose.foundation.layout.Box {
                         Surface(
                             shape = RoundedCornerShape(99.dp),
                             color = MaterialTheme.colorScheme.primaryContainer,
-                            modifier = Modifier.clickableChip { menuOpen = true }
+                            modifier = if (nextStates.isNotEmpty()) {
+                                Modifier.clickableChip { menuOpen = true }
+                            } else {
+                                Modifier
+                            }
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -197,16 +211,18 @@ fun TicketDetailScreen(
                                     fontSize = 12.sp,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                Icon(
-                                    Icons.Default.KeyboardArrowDown,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp),
-                                    tint = MaterialTheme.colorScheme.primary
-                                )
+                                if (nextStates.isNotEmpty()) {
+                                    Icon(
+                                        Icons.Default.KeyboardArrowDown,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
                             }
                         }
                         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                            TicketStatus.entries.forEach { option ->
+                            nextStates.forEach { option ->
                                 DropdownMenuItem(
                                     text = { Text(option.label) },
                                     onClick = { onStatusChanged(option) }

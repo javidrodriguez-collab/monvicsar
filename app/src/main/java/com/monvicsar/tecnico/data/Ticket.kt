@@ -5,7 +5,23 @@ enum class TicketStatus(val label: String) {
     TRAVELING("Traveling"),
     WORKING("Working"),
     SUSPEND("Suspend"),
-    CLOSED("Closed")
+    CLOSED("Closed");
+
+    /**
+     * Ciclo de vida fijo del ticket: Assign -> Traveling -> Working -> (Suspend | Closed),
+     * y Suspend -> Working al retomar. "Assign" nunca es un destino valido: solo lo
+     * establece el despachador al crear/asignar el ticket, el tecnico no puede volver a el.
+     */
+    fun validNextStates(): List<TicketStatus> = when (this) {
+        ASSIGN -> listOf(TRAVELING)
+        TRAVELING -> listOf(WORKING)
+        WORKING -> listOf(SUSPEND, CLOSED)
+        SUSPEND -> listOf(WORKING)
+        CLOSED -> emptyList()
+    }
+
+    /** Estados que implican que el tecnico esta fisicamente ocupado con ESTE ticket. */
+    fun isActiveFieldState(): Boolean = this == TRAVELING || this == WORKING
 }
 
 enum class TicketPriority {
