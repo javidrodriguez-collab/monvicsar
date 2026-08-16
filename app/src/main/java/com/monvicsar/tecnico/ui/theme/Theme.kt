@@ -1,7 +1,6 @@
 package com.monvicsar.tecnico.ui.theme
 
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -24,8 +23,10 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun MonvicsarTecnicoTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    // Forzado a modo claro siempre: la app esta pensada para uso en campo bajo
+    // sol directo, no debe seguir el modo oscuro del sistema del telefono.
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
