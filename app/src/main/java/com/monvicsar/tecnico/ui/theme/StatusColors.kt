@@ -3,10 +3,11 @@ package com.monvicsar.tecnico.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // Tipo de Llamada / prioridad (franja lateral): Tipo 1 = Urgente/Critico (rojo),
-// Tipo 2 = Alta (naranja), Tipo 3 = Operativo/No urgente (amarillo).
+// Tipo 2 = Alta (naranja), Tipo 3 = Operativo/No urgente (amarillo), Tipo 4 (azul).
 val PriorityUrgent = Color(0xFFD3402F)
 val PriorityHigh = Color(0xFFC6821F)
 val PriorityNormal = Color(0xFFE0B400)
+val PriorityType4 = Color(0xFF2D6CDF)
 
 // Estado (chip) — fondo suave + texto
 val StatusAssignBg = Color(0xFFEEF1F6)

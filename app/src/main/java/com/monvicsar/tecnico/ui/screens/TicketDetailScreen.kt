@@ -184,7 +184,7 @@ fun TicketDetailScreen(
                     Column {
                         Text("Prioridad", style = MaterialTheme.typography.labelSmall)
                         Text(
-                            text = "● ${ticket.priority.name.lowercase().replaceFirstChar { it.uppercase() }}",
+                            text = "● ${ticket.priority.label}",
                             color = com.monvicsar.tecnico.ui.components.priorityColor(ticket.priority),
                             fontWeight = FontWeight.Bold,
                             fontSize = 12.sp

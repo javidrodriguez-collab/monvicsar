@@ -24,8 +24,13 @@ enum class TicketStatus(val label: String) {
     fun isActiveFieldState(): Boolean = this == TRAVELING || this == WORKING
 }
 
-enum class TicketPriority {
-    URGENT, HIGH, NORMAL
+// Tipo de Llamada: Tipo 1 = URGENT, Tipo 2 = HIGH, Tipo 3 = NORMAL,
+// Tipo 4 = TYPE4 (pausa el reloj de SLA, requiere comentario de justificacion -- ver Fase futura).
+enum class TicketPriority(val label: String) {
+    URGENT("Urgente"),
+    HIGH("Alta"),
+    NORMAL("Operativo"),
+    TYPE4("Tipo 4")
 }
 
 data class Ticket(

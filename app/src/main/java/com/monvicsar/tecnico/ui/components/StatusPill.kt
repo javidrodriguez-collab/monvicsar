@@ -14,6 +14,7 @@ import com.monvicsar.tecnico.data.TicketPriority
 import com.monvicsar.tecnico.data.TicketStatus
 import com.monvicsar.tecnico.ui.theme.PriorityHigh
 import com.monvicsar.tecnico.ui.theme.PriorityNormal
+import com.monvicsar.tecnico.ui.theme.PriorityType4
 import com.monvicsar.tecnico.ui.theme.PriorityUrgent
 import com.monvicsar.tecnico.ui.theme.StatusAssignBg
 import com.monvicsar.tecnico.ui.theme.StatusAssignFg
@@ -67,4 +68,5 @@ fun priorityColor(priority: TicketPriority) = when (priority) {
     TicketPriority.URGENT -> PriorityUrgent
     TicketPriority.HIGH -> PriorityHigh
     TicketPriority.NORMAL -> PriorityNormal
+    TicketPriority.TYPE4 -> PriorityType4
 }
