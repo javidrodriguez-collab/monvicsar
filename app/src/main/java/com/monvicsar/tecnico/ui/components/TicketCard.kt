@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -28,16 +29,17 @@ fun TicketCard(ticket: Ticket, onClick: () -> Unit, modifier: Modifier = Modifie
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
-        Row {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
                     .width(5.dp)
-                    .fillMaxWidth()
+                    .fillMaxHeight()
                     .background(priorityColor(ticket.priority), RectangleShape)
             ) {}
-            Column(modifier = Modifier.padding(13.dp)) {
+            Column(modifier = Modifier.weight(1f).padding(13.dp)) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = ticket.id,
