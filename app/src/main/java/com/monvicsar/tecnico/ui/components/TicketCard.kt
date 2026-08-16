@@ -37,7 +37,7 @@ fun TicketCard(ticket: Ticket, onClick: () -> Unit, modifier: Modifier = Modifie
         Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
             Box(
                 modifier = Modifier
-                    .width(5.dp)
+                    .width(7.dp)
                     .fillMaxHeight()
                     .background(priorityColor(ticket.priority), RectangleShape)
             ) {}

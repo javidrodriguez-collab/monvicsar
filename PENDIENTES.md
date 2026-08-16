@@ -16,7 +16,13 @@ Si este bug reaparece en el futuro (ej. tras instalar una app nueva), revisar pr
 
 Ver el fix de arriba (causa raíz resuelta). **Sigue pendiente**: aplicar el renombrado real de las 5 entradas (`Open`/`Replied`/`En Diagnostico`/`En Reparacion`/`Closed` → `Assign`/`Traveling`/`Working`/`Suspend`/`Closed`), que nunca se llegó a intentar por el bug — ahora que `rename_doc` funciona, debería ser directo. Ver [[project-monvicsar-tecnico-estados]].
 
-## 3. Login de GLPI (`http://localhost:8090` en el servidor)
+## 3. Tipo de Llamada + Equipo ATM en ERPNext (2026-08-16) — construido, con pendientes
+
+Ya en producción: DocType `Tipo de Llamada` (5 entradas), 3 campos custom en `HD Ticket`, numeración `SR.MM.DD.####`, y ambos campos ya seleccionables en la pantalla de "Nuevo Ticket". Detalle completo y scripts re-ejecutables en `erpnext-scripts/` (carpeta nueva en este repo).
+
+**Pendiente**: el usuario también quiere elegir Tipo de Llamada y Equipo ATM desde el **panel lateral del detalle de un ticket ya creado** (`/helpdesk/tickets/<id>`, la columna derecha con Ticket Type/Priority/Customer/Team/Asignado). "Asignado" (para asignar al técnico) y "Comment" (comentarios) ya existen ahí, no hace falta agregarlos. `HD Field Layout` está vacío (sin registros), así que ese panel no se configura por ahí — falta investigar el componente Vue del detalle de ticket en `apps/helpdesk/desk/src/pages/ticket/` para saber cómo agregar campos ahí (ver nota completa en `erpnext-scripts/README.md`).
+
+## 4. Login de GLPI (`http://localhost:8090` en el servidor)
 
 - Las credenciales por defecto (`glpi`/`glpi`) no funcionan — el usuario "glpi" no existe en esta instalación.
 - Se creó un usuario nuevo por consola: **`monvicsar_admin` / `Monvicsar2026!`** — pero el intento de darle perfil de administrador falló ("Profile not found") probando `Admin`, `Super-Admin`, `Súper-Admin`.
