@@ -7,6 +7,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -15,10 +16,20 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Teal80
 )
 
+// Fondo de pagina (--paper) claramente distinto de la superficie de las tarjetas
+// (--surface, blanco) -- sin esto Material3 usa un fondo casi identico al de las
+// tarjetas y se pierden los bordes/franjas de color.
 private val LightColorScheme = lightColorScheme(
     primary = Blue40,
     secondary = BlueGrey40,
-    tertiary = Teal40
+    tertiary = Teal40,
+    background = Color(0xFFF2F4F8),
+    onBackground = Color(0xFF121826),
+    surface = Color(0xFFFFFFFF),
+    onSurface = Color(0xFF121826),
+    surfaceVariant = Color(0xFFE7EBF2),
+    onSurfaceVariant = Color(0xFF57677E),
+    outline = Color(0xFFD8DEE8)
 )
 
 @Composable
