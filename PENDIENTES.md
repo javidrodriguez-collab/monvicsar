@@ -1,26 +1,20 @@
 # Pendientes de infraestructura (2026-08-16)
 
-Cosas que quedaron sin resolver hoy, para retomar mañana **físicamente en el servidor** (Remote Desktop / consola directa, no por SSH).
+## ✅ RESUELTO (2026-08-16, sesión posterior): Helpdesk 500 + bug de rename_doc
 
-## 1. ERPNext Helpdesk caído (500 Internal Server Error) — URGENTE
+**Causa raíz encontrada**: `sites/apps.txt` en el bench (la lista maestra de apps instaladas que usa Frappe para resolver `get_module_app()`) solo tenía `erpnext` y `frappe` — le faltaban `helpdesk` y `telephony`, aunque ambas apps estaban perfectamente instaladas en disco y en la base de datos. Por eso Frappe nunca podía resolver el módulo "Helpdesk" en ningún contexto — esto explicaba **a la vez** el 500 de `/helpdesk` y el bug viejo de `rename_doc` de abajo (misma causa, dos síntomas).
 
-- `erp.monvicsar.com/helpdesk` da 500. Causado probablemente por un `docker restart erpnext-backend-1` que dejó el link de assets a medias (la carpeta de build de "helpdesk" no aparece en `sites/assets/helpdesk` del contenedor, solo "desk").
-- **Fix a correr en el servidor** (bloqueado para mí por protección de seguridad, hay que correrlo manualmente):
-  ```powershell
-  wsl -d Ubuntu -- bash -c "cd /home/monvicsar/erpnext && docker compose -f pwd.yml restart backend frontend"
-  ```
-- Si eso no lo arregla, el siguiente paso sería `docker compose -f pwd.yml down` + `up -d` (reinicio completo del stack, mismo patrón que un incidente anterior documentado en `n8n-proyectos/claude.md`).
-- Verificar después con: `erp.monvicsar.com/helpdesk` debe cargar el dashboard normal.
+**Fix aplicado**:
+1. Se corrigió `sites/apps.txt` dentro del contenedor `erpnext-backend-1` (`erpnext\nfrappe\nhelpdesk\ntelephony`).
+2. Restart completo del stack (`backend frontend queue-short queue-long scheduler websocket`).
+3. `bench --site frontend clear-cache` — necesario porque Redis (no reiniciado por el restart de contenedores) tenía cacheado el mapa viejo de `app_modules` desde antes del fix.
+4. Verificado: `/helpdesk` carga 200 OK, `rename_doc` funciona (se probó renombrando las 5 entradas del nuevo DocType `Tipo de Llamada` sin error).
 
-## 2. Bug de renombrado en `HD Ticket Status` (sin resolver)
+Si este bug reaparece en el futuro (ej. tras instalar una app nueva), revisar primero `sites/apps.txt` dentro del contenedor backend y confirmar que liste todas las apps instaladas, luego `bench clear-cache`.
 
-Detalle técnico completo documentado en `n8n-proyectos/claude.md` (sección "App Android Monvicsar Técnico"). Resumen:
+## 2. Bug de renombrado en `HD Ticket Status` — YA NO DEBERÍA OCURRIR
 
-- `label_agent` es el campo `autoname` (= la clave primaria del documento) — no se puede cambiar con un PUT normal, hay que usar `frappe.client.rename_doc`.
-- `rename_doc` falla con `404 DoesNotExistError: "Módulo Helpdesk no encontrado"`, aunque el `Module Def` "Helpdesk" existe correctamente en la base y todo el filesystem del contenedor está bien instalado.
-- Causa raíz: `get_module_app()` en Frappe revisa `frappe.local.module_app`, un mapa cacheado **en memoria del proceso** (`site_cache`) — un `docker restart erpnext-backend-1` no lo arregló, sigue sin explicación completa.
-- **Estado actual real de los estados**: `Open`/`Replied`/`En Diagnostico`/`En Reparacion`/`Closed` sin renombrar todavía. Colores sí actualizados (Gray/Orange/Blue/Black-sin-cambiar/Green). `Resolved` fue eliminado.
-- **Pendiente**: probar si renombrar funciona directo desde la UI de Frappe (nunca se llegó a probar), o investigar más a fondo el cacheo de `module_app`.
+Ver el fix de arriba (causa raíz resuelta). **Sigue pendiente**: aplicar el renombrado real de las 5 entradas (`Open`/`Replied`/`En Diagnostico`/`En Reparacion`/`Closed` → `Assign`/`Traveling`/`Working`/`Suspend`/`Closed`), que nunca se llegó a intentar por el bug — ahora que `rename_doc` funciona, debería ser directo. Ver [[project-monvicsar-tecnico-estados]].
 
 ## 3. Login de GLPI (`http://localhost:8090` en el servidor)
 
